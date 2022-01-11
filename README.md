@@ -9,6 +9,7 @@ PLANS
 MAIN IDEA:
 
 - generate color schemes from NASA images, users instagram profile, find most similar images and build them timelined "tour" of space based on top 3 matches
+- use similarity to make sure the matches arent too similar / boring
 
   - use similarity of colour schemes to identify a similar image from cached APOD on server, used server-side similarity matrix to return "matches"
 
@@ -18,3 +19,9 @@ MAIN IDEA:
     - for each one, include a picture of the day
     - include horoscope from that day XD
     - near earth objects in date range of images/posts?
+
+## Dependencies / libraries used
+
+Frontend:
+
+- Use colorthief library for generating color palettes of images (also used in backend)
