@@ -25,3 +25,5 @@ yarn-error.log*
 **/APOD
 **/venv
 **/__pycache__
+
+.env
