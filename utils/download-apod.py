@@ -24,7 +24,7 @@ for x in list:
     write_filename = x["date"] + "." + str(ext)
     try:
         f = open("APOD/" + write_filename, "wb")
-        f.write(img.content)
+        f.write(img.content) # we want to save it as the date so that the backend can tell the frontend which data to fetch and display directly from NASA
         print("Wrote: " + write_filename)
         f.close()
     except Exception as e:
