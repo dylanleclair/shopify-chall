@@ -1,12 +1,16 @@
 # this script will download a huge set of images from the NASA APOD that we can use to make it work
 
 import requests
-import os
+import environ
 import traceback 
 
-NUMBER_TO_DOWNLOAD=5
+env = environ.Env()
+environ.Env.read_env()
 
-list = requests.get("https://api.nasa.gov/planetary/apod?api_key=TEBAn743thZqnzWGLEm2daNnIvtMxrWpUInKAYr2&count=" + str(NUMBER_TO_DOWNLOAD) + "&thumbs=True")
+NUMBER_TO_DOWNLOAD=5
+API_KEY = env("NASA_API")
+
+list = requests.get("https://api.nasa.gov/planetary/apod?api_key=" + API_KEY + "&count=" + str(NUMBER_TO_DOWNLOAD) + "&thumbs=True")
 
 if not list.ok:
     print("Failed to fetch APOD data.")

@@ -4,6 +4,7 @@ import os
 import sys
 import colorscheme
 import json
+
 # this will help us with the next step of the project where we need to take the
 # users colour scheme and try to match it with every other color scheme, maximizing similarity.
 
