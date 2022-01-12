@@ -1,14 +1,17 @@
 # this script will download a huge set of images from the NASA APOD that we can use to make it work
 
+from os import system, write
 import requests
-import environ
 import traceback 
+import json
 
-env = environ.Env()
-environ.Env.read_env()
 
-NUMBER_TO_DOWNLOAD=5
-API_KEY = env("NASA_API")
+f = open(".env","r")
+key = f.readline()
+key = key.strip()
+
+NUMBER_TO_DOWNLOAD=100
+API_KEY = key
 
 list = requests.get("https://api.nasa.gov/planetary/apod?api_key=" + API_KEY + "&count=" + str(NUMBER_TO_DOWNLOAD) + "&thumbs=True")
 
@@ -26,10 +29,15 @@ for x in list:
     filename = x["url"].split("/")[-1] # parse the filename so we can save the image according to it
     ext = filename.split(".")[-1]
     write_filename = x["date"] + "." + str(ext)
+    write_json_name = x['date'] + ".json"
     try:
         f = open("APOD/" + write_filename, "wb")
         f.write(img.content) # we want to save it as the date so that the backend can tell the frontend which data to fetch and display directly from NASA
         print("Wrote: " + write_filename)
+        f.close()
+
+        f = open("APOD/json/" + write_json_name, "w")
+        json.dump(x, f)
         f.close()
     except Exception as e:
         traceback.print_exc()

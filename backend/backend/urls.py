@@ -16,6 +16,8 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path
 
+from imgcmp.views import APODSimilarImages
 urlpatterns = [
     path('admin/', admin.site.urls),
+    path('api/imgcmp', APODSimilarImages.as_view(), name="APODSimilarImages"),
 ]

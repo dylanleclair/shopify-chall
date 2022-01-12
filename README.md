@@ -25,3 +25,10 @@ MAIN IDEA:
 Frontend:
 
 - Use colorthief library for generating color palettes of images (also used in backend)
+
+## Change of plans:
+
+- Instead of using instagram API since approval process is long and complicated....
+- Have user upload 3 images they want to guide their journey
+- The client will then send colour schemes of the files to the server, which will calculate and return the 3 most similar APOD entries it's cached
+- The client will then display them / transform this into a nice frontend view.
