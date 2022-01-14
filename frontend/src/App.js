@@ -1,24 +1,47 @@
-import logo from './logo.svg';
-import './App.css';
+import logo from "./logo.svg";
+import "./App.css";
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
+    <div className="">
+      <header className="">
+        caskaydia.net
       </header>
+
+      <main>
+
+      <section id="app-introduction">
+        <div>Title</div>
+
+        <input type="file" name="guiding-image" accept="image/png, image/jpeg"></input>
+
+      </section>
+
+      </main>
     </div>
+  );
+}
+
+function APODArticle(props) {
+  return (
+    <section>
+      <article>
+
+        <div>Color palette</div>
+        <figure>
+          <img alt="One of NASA's many astronomy pictures of the day!"></img>
+          <figcaption>the title of the image (smaller) ?</figcaption>
+        </figure>
+
+        <div>
+          <div>Title</div>
+          <div>Date</div>
+        </div>
+
+        <p></p>
+
+      </article>
+    </section>
   );
 }
 
