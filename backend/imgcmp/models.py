@@ -10,3 +10,15 @@ class Experience(models.Model):
     date1 = CharField(max_length=20)
     date2 = CharField(max_length=20)
     date3 = CharField(max_length=20)
+    @classmethod
+    def create(cls, dates):
+        exp = cls(
+            date1 = dates[0],
+            date2 = dates[1],
+            date3 = dates[2],
+        )
+        exp.save()
+        return exp 
+
+    def toList(self):
+        return [self.date1, self.date2, self.date3]

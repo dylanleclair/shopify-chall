@@ -25,8 +25,8 @@ list = list.json() # turn the data into JSON so we can work with it
 for x in list:
     # check if the image exists in the output folder
     # if it does not already, save it to the output folder
-    img = requests.get(x["url"])
-    filename = x["url"].split("/")[-1] # parse the filename so we can save the image according to it
+    img = requests.get(x["hdurl"])
+    filename = x["hdurl"].split("/")[-1] # parse the filename so we can save the image according to it
     ext = filename.split(".")[-1]
     write_filename = x["date"] + "." + str(ext)
     write_json_name = x['date'] + ".json"

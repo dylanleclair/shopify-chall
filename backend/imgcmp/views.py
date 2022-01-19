@@ -2,7 +2,7 @@ import os
 from django.shortcuts import render
 from rest_framework.response import Response
 from rest_framework import status
-
+from .models import Experience
 from rest_framework.views import APIView
 
 import math
@@ -54,6 +54,7 @@ class APODSimilarImages(APIView):
         like_palettes = calculate_similar(s)
 
         output = []
+        dates = []
 
         # for each similar image, collect JSON of corresponding APOD entry
         for x in like_palettes:
@@ -61,6 +62,20 @@ class APODSimilarImages(APIView):
             path = os.path.join("APOD", "json", date)
             f = open(path, "r")
             output.append(json.load(f))
+            dates.append(x['date'])
+        exp = Experience.create(dates=dates)
 
         # return JSON in response
-        return Response(output, status=status.HTTP_200_OK)
+        return Response([exp.uuid,output], status=status.HTTP_200_OK)
+
+class APODRestore(APIView):
+    def get(self, request,uuid, *args, **kwargs):
+        output = []
+        exp = Experience.objects.get(uuid=uuid)
+        dates = [exp.date1, exp.date2, exp.date3]
+        for x in dates:
+            date = x + ".json"
+            path = os.path.join("APOD", "json", date)
+            f = open(path, "r")
+            output.append(json.load(f))
+        return Response([exp.uuid,output], status=status.HTTP_200_OK)
