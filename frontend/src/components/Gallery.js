@@ -6,7 +6,8 @@ import { withCookies, Cookies } from "react-cookie";
 import { ApodArticle } from "./Home";
 import { Introduction, BasicButton, Header } from "../App";
 
-const url = "http://localhost:8000";
+const url = "https://data.ellaaa.ca";
+//const url = "http://127.0.0.1:8000";
 
 /**
  * To finish this off, we'll use cookies to track an array of dates that the user has "liked".
@@ -24,8 +25,16 @@ class Gallery extends React.Component {
 
     const { cookies } = props;
 
+    console.log(this.props.match.params["dates"]);
+    const d =
+      "dates" in this.props.match.params
+        ? this.props.match.params["dates"].split("A")
+        : cookies.get("liked") || [];
+
+    console.log(d);
+
     this.state = {
-      dates: cookies.get("liked") || [],
+      dates: d,
       dataPresent: false,
       data: [],
       uuid: this.props.match.params["uuid"],
@@ -54,11 +63,13 @@ class Gallery extends React.Component {
   }
 
   render() {
-    const shareURL = `/${this.state.link}`;
+    var dates = this.state.dates.join("A");
+
+    const shareURL = `/gallery/${dates}`;
 
     const caption =
       this.state.dates.length > 0 ? (
-        "Scroll down to rediscover the pictures you've liked."
+        "Scroll down to rediscover the pictures you (or a friend) has liked."
       ) : (
         <span>
           Like some images at the{" "}
@@ -98,6 +109,10 @@ class Gallery extends React.Component {
 
         {this.state.dataPresent && (
           <footer className="flex flex-col gap-m">
+            <div id="footer-caption">Share your gallery.</div>
+            <p>
+              url: <a href={shareURL}>https://caskaydia.com{shareURL}</a>
+            </p>
             <div id="footer-caption">
               A Website By Dylan Leclair using the NASA API
             </div>
