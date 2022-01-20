@@ -4,7 +4,7 @@ import { instanceOf } from "prop-types";
 import { withCookies, Cookies } from "react-cookie";
 
 import { ApodArticle } from "./Home";
-import { Header } from "../App";
+import { Introduction, BasicButton, Header } from "../App";
 
 const url = "http://localhost:8000";
 
@@ -46,7 +46,7 @@ class Gallery extends React.Component {
         console.log(parsedData);
 
         this.setState({
-          dataPresent: true,
+          dataPresent: parsedData.length > 0,
           data: parsedData,
         });
       }
@@ -75,15 +75,12 @@ class Gallery extends React.Component {
         <Header homepage={false} />
 
         <main>
-          <section id="intro-section" className="flex flex-col">
-            <div id="intro-container" className="flex flex-col container">
-              <div>
-                <div className="title-font">Your Gallery</div>
-                <div className="body-font">{caption}</div>
-              </div>
+          <Introduction>
+            <div>
+              <div className="title-font">Your Gallery</div>
+              <div className="body-font">{caption}</div>
             </div>
-          </section>
-
+          </Introduction>
           {this.state.dataPresent && (
             <section className="flex flex-col">
               <div className="flex flex-col gap-l">
@@ -92,22 +89,23 @@ class Gallery extends React.Component {
                     return <ApodArticle entry={x} delay={i} key={i} />;
                   })}
               </div>
+              <a href="/gallery">
+                <BasicButton text={"Refresh"} />
+              </a>
             </section>
           )}
         </main>
 
         {this.state.dataPresent && (
           <footer className="flex flex-col gap-m">
-            <div id="footer-caption">A Website By Dylan Leclair</div>
+            <div id="footer-caption">
+              A Website By Dylan Leclair using the NASA API
+            </div>
           </footer>
         )}
       </div>
     );
   }
-}
-
-function RefreshButton(props) {
-    return ();
 }
 
 export default withCookies(Gallery);

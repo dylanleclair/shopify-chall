@@ -40,5 +40,26 @@ function Header(props) {
     </header>
   );
 }
-export { Header };
+
+function BasicButton(props) {
+  return (
+    <div>
+      <button className="btn btn-outline-dark" onClick={props.function}>
+        {props.text}
+      </button>
+    </div>
+  );
+}
+
+function Introduction(props) {
+  return (
+    <section id="intro-section" className="flex flex-col">
+      <div id="intro-container" className="flex flex-col container">
+        {props.children}
+      </div>
+    </section>
+  );
+}
+
+export { Introduction, BasicButton, Header };
 export default App;

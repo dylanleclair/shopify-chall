@@ -36,9 +36,9 @@ def calculate_similar(scheme):
         # collect in output
 
         data.sort(key=lambda x : palette_similarity(x['scheme'],scheme))
-        print(data)
-        for x in data:
-            print(palette_similarity(x['scheme'], scheme))
+        #print(data)
+        #for x in data:
+        #    print(palette_similarity(x['scheme'], scheme))
         return data[:3] # append top 3 matches
     
 
@@ -63,7 +63,14 @@ class APODSimilarImages(APIView):
             f = open(path, "r")
             output.append(json.load(f))
             dates.append(x['date'])
-        exp = Experience.create(dates=dates)
+
+        query = Experience.objects.filter(date1=date[0], date2=date[1], date3=date[2])
+        exp = ""
+        if len(query) == 0:
+            exp = Experience.create(dates=dates)
+        else:
+            exp = query[0].uuid
+        
 
         # return JSON in response
         return Response([exp.uuid,output], status=status.HTTP_200_OK)

@@ -2,7 +2,7 @@ import "../App.css";
 import React from "react";
 
 import { ApodArticle } from "./Home";
-import { Header } from "../App";
+import { Introduction, Header } from "../App";
 const url = "http://localhost:8000";
 
 class Uuid extends React.Component {
@@ -28,7 +28,7 @@ class Uuid extends React.Component {
         const parsedData = JSON.parse(rawdata);
         console.log(parsedData);
         if (parsedData.length !== 2) {
-          console.log("error fetching previous!");
+          console.log("error fetching data!");
         } else {
           this.setState({
             dataPresent: true,
@@ -47,16 +47,14 @@ class Uuid extends React.Component {
       <div className="">
         <Header homepage={false} />
         <main>
-          <section id="intro-section" className="flex flex-col">
-            <div id="intro-container" className="flex flex-col container">
-              <div>
-                <div className="title-font">Welcome!</div>
-                <div className="body-font">
-                  You're exploring someone else's adventure.
-                </div>
+          <Introduction>
+            <div>
+              <div className="title-font">Welcome!</div>
+              <div className="body-font">
+                You're exploring someone else's adventure.
               </div>
             </div>
-          </section>
+          </Introduction>
 
           {this.state.dataPresent && (
             <section className="flex flex-col">

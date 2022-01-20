@@ -3,11 +3,10 @@ import ColorThief from "colorthief";
 import React from "react";
 import { instanceOf } from "prop-types";
 import { withCookies, Cookies, useCookies } from "react-cookie";
-import { Header } from "../App";
+import { Introduction, BasicButton, Header } from "../App";
 const colorThief = new ColorThief();
 
 const url = "http://localhost:8000";
-const local = "http://localhost:3000";
 
 class Home extends React.Component {
   constructor(props) {
@@ -100,21 +99,19 @@ class Home extends React.Component {
       <div className="">
         <Header homepage={true} />
         <main>
-          <section id="intro-section" className="flex flex-col">
-            <div id="intro-container" className="flex flex-col container">
-              <div>
-                <div className="title-font">{titleprompt}</div>
-                <div className="body-font">{caption}</div>
+          <Introduction>
+            <div>
+              <div className="title-font">{titleprompt}</div>
+              <div className="body-font">{caption}</div>
 
-                {!this.state.dataPresent && (
-                  <ImageUpload onFileSelect={this.setSelectedPhoto} />
-                )}
-                {loadPreview && (
-                  <div id="img-loaded">Please scroll down to continue!</div>
-                )}
-              </div>
+              {!this.state.dataPresent && (
+                <ImageUpload onFileSelect={this.setSelectedPhoto} />
+              )}
+              {loadPreview && (
+                <div id="img-loaded">Please scroll down to continue!</div>
+              )}
             </div>
-          </section>
+          </Introduction>
 
           {loadPreview && (
             <section id="preview" className="flex">
@@ -166,7 +163,12 @@ class Home extends React.Component {
                     return <ApodArticle entry={x} delay={i} key={i} />;
                   })}
               </div>
-              {this.state.dataPresent && <Reset onReset={this.resetState} />}
+              {this.state.dataPresent && (
+                <BasicButton
+                  text={"Reset journey"}
+                  function={this.resetState}
+                />
+              )}
             </section>
           )}
         </main>
@@ -177,6 +179,9 @@ class Home extends React.Component {
             <p>
               url: <a href={shareURL}>https://caskaydia.com{shareURL}</a>
             </p>
+            <div id="footer-caption">
+              A Website By Dylan Leclair using the NASA API
+            </div>
           </footer>
         )}
       </div>
@@ -222,7 +227,7 @@ class ApodArticle extends React.Component {
       animationDelay: `${this.props.delay}s`,
       animationName: "fade-in",
       animationTimingFunction: "linear",
-      animationDuration: "1.4s",
+      animationDuration: "1.3s",
       animationFillMode: "forwards",
     };
 
@@ -260,8 +265,6 @@ class ApodArticle extends React.Component {
     const imgurl = entry["hdurl"];
     const date = entry["date"];
     const body = entry["explanation"];
-
-    const likeBtnText = this.state.liked ? "Unlike" : "Like";
 
     return (
       <article
@@ -305,16 +308,6 @@ function ColorPreview(props) {
   };
 
   return <div className={props.name} style={style}></div>;
-}
-
-function Reset(props) {
-  return (
-    <div>
-      <button className="btn btn-outline-dark" onClick={props.onReset}>
-        Reset
-      </button>
-    </div>
-  );
 }
 
 function LikeButton(props) {
