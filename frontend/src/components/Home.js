@@ -1,13 +1,13 @@
 import "../App.css";
 import ColorThief from "colorthief";
 import React from "react";
-
+import { instanceOf } from "prop-types";
+import { withCookies, Cookies, useCookies } from "react-cookie";
+import { Header } from "../App";
 const colorThief = new ColorThief();
 
 const url = "http://localhost:8000";
 const local = "http://localhost:3000";
-
-import { withCookies, Cookies } from "react-cookie";
 
 class Home extends React.Component {
   constructor(props) {
@@ -98,8 +98,7 @@ class Home extends React.Component {
 
     return (
       <div className="">
-        <header className="flex">caskaydia</header>
-
+        <Header homepage={true} />
         <main>
           <section id="intro-section" className="flex flex-col">
             <div id="intro-container" className="flex flex-col container">
@@ -205,17 +204,17 @@ function ImageUpload({ onFileSelect }) {
 }
 
 class ApodArticle extends React.Component {
-  static propTypes = {
-    cookies: instanceOf(Cookies).isRequired,
-  };
   constructor(props) {
     super(props);
+
+    // check if the current image is in liked
+    const date = props.entry.date;
 
     this.state = {
       entry: props.entry,
       palette: [],
       paletteReady: false,
-      liked: false,
+      liked: false || false,
     };
 
     this.style = {
@@ -293,11 +292,7 @@ class ApodArticle extends React.Component {
         </div>
 
         <p>{body}</p>
-        <div id="like-btn">
-          <button className="btn btn-outline-danger" onClick={this.handleLike}>
-            {likeBtnText}
-          </button>
-        </div>
+        <LikeButton date={date} />
       </article>
     );
   }
@@ -317,6 +312,42 @@ function Reset(props) {
     <div>
       <button className="btn btn-outline-dark" onClick={props.onReset}>
         Reset
+      </button>
+    </div>
+  );
+}
+
+function LikeButton(props) {
+  const [cookies, setCookie] = useCookies(["liked"]);
+
+  const likedDates = cookies.liked || [];
+  var isLiked = false;
+  if (likedDates.indexOf(props.date) > -1) {
+    isLiked = true;
+  }
+
+  const likeBtnText = isLiked ? "Unlike" : "Like";
+
+  function handleToggle() {
+    const date = props.date;
+    const val = cookies.liked || [];
+    console.log("precondition" + val);
+    const index = val.indexOf(date);
+    if (index > -1) {
+      val.splice(index, 1);
+      setCookie("liked", val);
+      console.log("postcondition" + val);
+    } else {
+      val.push(date);
+      setCookie("liked", val);
+      console.log("postcondition" + val);
+    }
+  }
+
+  return (
+    <div id="like-btn">
+      <button className="btn btn-outline-danger" onClick={handleToggle}>
+        {likeBtnText}
       </button>
     </div>
   );

@@ -1,7 +1,10 @@
 import "../App.css";
 import React from "react";
+import { instanceOf } from "prop-types";
+import { withCookies, Cookies } from "react-cookie";
 
 import { ApodArticle } from "./Home";
+import { Header } from "../App";
 
 const url = "http://localhost:8000";
 
@@ -11,10 +14,18 @@ const url = "http://localhost:8000";
  * The user can then navigate to this page to view said entries.
  */
 
-class Uuid extends React.Component {
+class Gallery extends React.Component {
+  static propTypes = {
+    cookies: instanceOf(Cookies).isRequired,
+  };
+
   constructor(props) {
     super(props);
+
+    const { cookies } = props;
+
     this.state = {
+      dates: cookies.get("liked") || [],
       dataPresent: false,
       data: [],
       uuid: this.props.match.params["uuid"],
@@ -23,25 +34,21 @@ class Uuid extends React.Component {
 
   componentDidMount() {
     var xhr = new XMLHttpRequest();
-    xhr.open("GET", url + `/api/${this.state.uuid}`);
+    xhr.open("POST", url + `/api/gallery`);
     xhr.setRequestHeader("Accept", "application/json");
     xhr.setRequestHeader("Content-Type", "application/json");
-    xhr.send();
+    xhr.send(JSON.stringify(this.state.dates));
 
     xhr.onreadystatechange = () => {
       if (xhr.readyState === 4) {
         const rawdata = xhr.responseText;
         const parsedData = JSON.parse(rawdata);
         console.log(parsedData);
-        if (parsedData.length !== 2) {
-          console.log("error fetching previous!");
-        } else {
-          this.setState({
-            dataPresent: true,
-            link: parsedData[0],
-            data: parsedData[1],
-          });
-        }
+
+        this.setState({
+          dataPresent: true,
+          data: parsedData,
+        });
       }
     };
   }
@@ -49,22 +56,30 @@ class Uuid extends React.Component {
   render() {
     const shareURL = `/${this.state.link}`;
 
+    const caption =
+      this.state.dates.length > 0 ? (
+        "Scroll down to rediscover the pictures you've liked."
+      ) : (
+        <span>
+          Like some images at the{" "}
+          <a id="" href="/">
+            homepage
+          </a>{" "}
+          and come back to view them here!
+        </span>
+      );
+
+    console.log(this.state.dataPresent);
     return (
       <div className="">
-        <header className="flex">
-          <a id="home-link" href="/">
-            caskaydia
-          </a>
-        </header>
+        <Header homepage={false} />
 
         <main>
           <section id="intro-section" className="flex flex-col">
             <div id="intro-container" className="flex flex-col container">
               <div>
-                <div className="title-font">Welcome!</div>
-                <div className="body-font">
-                  You're exploring someone else's adventure.
-                </div>
+                <div className="title-font">Your Gallery</div>
+                <div className="body-font">{caption}</div>
               </div>
             </div>
           </section>
@@ -83,10 +98,7 @@ class Uuid extends React.Component {
 
         {this.state.dataPresent && (
           <footer className="flex flex-col gap-m">
-            <div id="footer-caption">Share your discoveries.</div>
-            <p>
-              url: <a href={shareURL}>https://caskaydia.com{shareURL}</a>
-            </p>
+            <div id="footer-caption">A Website By Dylan Leclair</div>
           </footer>
         )}
       </div>
@@ -94,4 +106,8 @@ class Uuid extends React.Component {
   }
 }
 
-export default Uuid;
+function RefreshButton(props) {
+    return ();
+}
+
+export default withCookies(Gallery);

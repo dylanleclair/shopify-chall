@@ -79,3 +79,21 @@ class APODRestore(APIView):
             f = open(path, "r")
             output.append(json.load(f))
         return Response([exp.uuid,output], status=status.HTTP_200_OK)
+
+
+class APODGallery(APIView):
+    def post(self,request, *args, **kwargs):
+            print(os.getcwd())
+            # get scheme from body
+            # calculate most similar apod entries
+            # fetch and return apod entry data
+            dates = request.data
+            output = []
+            # for each similar image, collect JSON of corresponding APOD entry
+            for date in dates:
+                path = os.path.join("APOD", "json", date + ".json")
+                f = open(path, "r")
+                output.append(json.load(f))
+
+            # return JSON in response
+            return Response(output, status=status.HTTP_200_OK)

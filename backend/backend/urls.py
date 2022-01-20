@@ -16,9 +16,10 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path
 
-from imgcmp.views import APODSimilarImages, APODRestore
+from imgcmp.views import APODSimilarImages, APODRestore, APODGallery
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('api/imgcmp', APODSimilarImages.as_view(), name="APODSimilarImages"),
     path('api/<uuid:uuid>', APODRestore.as_view(), name="APODRestore"),
+    path('api/gallery', APODGallery.as_view(), name="APODGallery"),
 ]

@@ -2,7 +2,7 @@ import "../App.css";
 import React from "react";
 
 import { ApodArticle } from "./Home";
-
+import { Header } from "../App";
 const url = "http://localhost:8000";
 
 class Uuid extends React.Component {
@@ -45,12 +45,7 @@ class Uuid extends React.Component {
 
     return (
       <div className="">
-        <header className="flex">
-          <a id="home-link" href="/">
-            caskaydia
-          </a>
-        </header>
-
+        <Header homepage={false} />
         <main>
           <section id="intro-section" className="flex flex-col">
             <div id="intro-container" className="flex flex-col container">
